@@ -1,15 +1,25 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch, connect } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { contactsOperations } from '../../redux/contacts';
+import { contactsOperations, contactsSelectors } from '../../redux/contacts';
 import { Form, Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
-function ContactForm({ onSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
+  const dispatch = useDispatch();
+  const contacts = useSelector(contactsSelectors.getVisibleContacts);
+
   const nameInputId = nanoid();
   const numberInputId = nanoid();
+
+  const checkRepeatName = name => {
+    return contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+  };
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -30,18 +40,22 @@ function ContactForm({ onSubmit }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number });
-    reset();
+    if (checkRepeatName(name)) {
+      return toast(`🤔 ${name} is already in the phonebook.`);
+    } else {
+      toast(`😊 ${name} creted`);
+      dispatch(contactsOperations.addContact({name, number}));
+    }
+    resetInput();
   };
 
-  function reset() {
+  const resetInput = () => {
     setName('');
     setNumber('');
-  }
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
-
       <Form.Group className="mb-3">
         <Form.Label htmlFor={nameInputId}>Name</Form.Label>
         <Form.Control
@@ -78,9 +92,9 @@ function ContactForm({ onSubmit }) {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmit: data => {
-      dispatch(contactsOperations.addContact(data))
+      dispatch(contactsOperations.addContact(data));
     },
-  }
+  };
 };
 
 export default connect(null, mapDispatchToProps)(ContactForm);
