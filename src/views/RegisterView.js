@@ -44,6 +44,7 @@ export default function RegisterView() {
               name="name"
               value={name}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -55,6 +56,7 @@ export default function RegisterView() {
               name="email"
               value={email}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -65,6 +67,7 @@ export default function RegisterView() {
               name="password"
               value={password}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 

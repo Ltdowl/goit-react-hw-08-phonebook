@@ -4,5 +4,5 @@ import { authSelectors } from '../redux/auth';
 
 export default function PrivateRoute () {
   const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+  return isLoggedIn ? <Outlet /> : <Navigate replace={true} to="/login" />;
 }

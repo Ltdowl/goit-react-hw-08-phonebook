@@ -9,7 +9,7 @@ import { authOperations } from '../redux/auth';
 import AppBar from './AppBar';
 import { Layout } from './Layout/Layout';
 import { ToastContainer } from 'react-toastify';
-
+import NotFound from '../views/NotFound';
 
 const HomeView = lazy(() => import('../views/HomeView'));
 const ContactsView = lazy(() => import('../views/ContactsView'));
@@ -44,7 +44,7 @@ export default function App() {
             <Route path="/contacts" element={<ContactsView />} />
           </Route>
 
-          <Route path="*" element={<HomeView />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </div>
